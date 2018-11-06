@@ -57,16 +57,18 @@ constraint fk_DS_NXB foreign key(NXB) references NhaXuatBan(maNXB)
 )
 go
 
+
 create table CuonSach(
 maCS char(7) primary key,	--CS00001, CS00002, ....
 maDS char(7),
 ngonNgu nvarchar(30),
 taiBan nvarchar(20),	--lần 1, lần 2.....
-trangThai nvarchar(30),	--Sẵn sàng, Đã mượn, Đã mất	
+trangThai nvarchar(30) default N'Sẵn sàng',	--Sẵn sàng, Đã mượn, Đã mất	
 
 constraint f_CS_DS foreign key(maDS) references DauSach(maDS)
 )
 go
+
 
 create table QuaTrinh_Muon(
 idMuon int identity primary key,
@@ -74,7 +76,7 @@ maCS char(7),
 maDG char(7),
 ngayMuon date,
 ngayHetHan date default (dateadd(day,14, getdate())),
-ngayGioTra date default null,
+ngayTra date default null,
 ghiChu nvarchar(100) default null,
 soLanGiaHan int default 0,
 
@@ -103,3 +105,80 @@ insert into NhaXuatBan values ('Nhà xuất bản Văn hóa', 'Nhà văn hóa th
 insert into NhaXuatBan values ('Nhà xuất bản Nhi đồng', 'Nhà văn hóa thiếu niên nhi đồng, quận 1, tp.HCM ', 0907444777)
 insert into NhaXuatBan values ('Nhà xuất bản Phương nam', 'quận 1, tp.HCM', 0169789777)
 insert into NhaXuatBan values ('Nhà xuất bản Mới', 'Linh Trung, Thủ Đức, tp.HCM', 0903888777)
+
+
+
+
+
+insert into DauSach (mads, tends, tacgia, theLoai, nxb) values ('DS00001', N'Trộm chó', N'Trịnh Hoàng', 1, 1)
+insert into DauSach (mads, tends, tacgia, theLoai, nxb) values ('DS00002', N'Đặt tên sao cho nó dài thật là dài :))', N'Trịnh Lâm', 2, 2)
+
+insert into CuonSach (maCS,mads,ngonngu,taiban) values ('CS00001', 'DS00001', N'Tiếng việt', N'Lần 1')
+insert into CuonSach (maCS,mads,ngonngu,taiban) values ('CS00002', 'DS00001', N'Tiếng việt', N'Lần 1')
+insert into CuonSach (maCS,mads,ngonngu,taiban) values ('CS00003', 'DS00001', N'Tiếng việt', N'Lần 1')
+insert into CuonSach (maCS,mads,ngonngu,taiban) values ('CS00004', 'DS00002', N'Tiếng việt', N'Lần 1')
+
+insert into QuaTrinh_Muon (maCS, maDG, ngayMuon) values ('CS00001', 'DG00001', '1/1/2018')
+insert into QuaTrinh_Muon (maCS, maDG, ngayMuon) values ('CS00002', 'DG00001', '11/1/2018')
+insert into QuaTrinh_Muon (maCS, maDG, ngayMuon,ngayHetHan) values ('CS00003', 'DG00001', '1/1/2018','2/2/2018')
+go
+---------------------------- -+- Trigger----------------------------
+
+
+create trigger tg_Update_SL_DS
+on CuonSach
+for insert 
+as
+begin
+	update DauSach
+	set soLuong+=1
+	where maDS = (select maDS from inserted)
+end
+go
+
+
+create trigger tg_UpdateTrangThaiSach
+on QuaTrinh_Muon
+for insert , update
+as
+begin
+	if exists (select * from inserted where ngayTra is null)
+		begin
+			update CuonSach set trangThai = N'Đang cho mượn' where maCS = (select maCS from inserted)
+		end
+	else
+		begin
+			update CuonSach set trangThai = N'Sẵn sàng' where maCS = (select maCS from inserted)
+		end
+end
+go
+
+
+-----------------------------Store Procedure-------------------------
+
+create proc getTableMuonSach(@TenSachTraCuu nvarchar(70))
+as
+begin
+	DECLARE @str NVARCHAR(150) = N'%', @i INT =1, @length INT;
+	SELECT @length = LEN(@TenSachTraCuu)
+
+	WHILE (@i < @length OR @i = @length )
+		BEGIN
+			SET @str = CONCAT(@str,SUBSTRING(@TenSachTraCuu,@i,1), '%');	
+			SET @i = @i + 1;
+		END 
+	
+	select maCS, tenDS,ngonNgu, taiBan, trangThai
+	from CuonSach cs join DauSach ds on cs.maDS=ds.maDS
+	where tenDS like @str
+
+end
+go
+
+
+
+
+
+--select * from dausach
+--select * from CuonSach
+--select * from QuaTrinh_Muon

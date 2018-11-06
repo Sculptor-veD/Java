@@ -79,6 +79,20 @@ public class J2SQL {
        
        return rs;
    }
+      
+       public String ExecuteReader(String sql, Object[] parameter)
+    {   
+        String kq = null;
+        try {
+            kq= J2SQL.instance.ExecuteReaderListString(sql, parameter).get(0);
+        } catch (Exception e) {
+            System.out.println("Query_ExecuteReader_Error");
+        }
+        
+        return kq;
+
+      
+    }
    
      /*    Thuc thi cau lenh SQL  Return 1 danh sach cot dau tien cua table     */
       public List<String> ExecuteReaderListString(String sql, Object[] parameter)
@@ -94,12 +108,12 @@ public class J2SQL {
             }           
             ResultSet rs;
            rs = ps.executeQuery();
+                   
             while(rs.next()){
                 list.add(rs.getString(1));
                 }
             
-        } catch (SQLException ex) {
-            Logger.getLogger(J2SQL.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {            
             System.out.println("Loi excutequery_resultSet");
         }
          
