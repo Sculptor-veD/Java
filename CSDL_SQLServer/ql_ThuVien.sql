@@ -30,6 +30,8 @@ constraint fk_DG_LoaiDG foreign key(loaiDG) references LoaiDocGia(maLoaiDG)
 )
 go
 
+
+
 create table TheLoaiSach(
 maTheLoai int identity primary key,
 tenTheLoai nvarchar(100), --Tiểu thuyết, Trinh thám,...
@@ -74,7 +76,7 @@ create table QuaTrinh_Muon(
 idMuon int identity primary key,
 maCS char(7),
 maDG char(7),
-ngayMuon date,
+ngayMuon date default getdate(),
 ngayHetHan date default (dateadd(day,14, getdate())),
 ngayTra date default null,
 ghiChu nvarchar(100) default null,
@@ -91,6 +93,7 @@ insert into LoaiDocGia values (1, 'Thành viên mới', 3)
 insert into LoaiDocGia values (2, 'Thân quen', 4)
 insert into LoaiDocGia values (3, 'VIP', 5)
 
+insert into DocGia (maDG, loaiDG, hoTen, ngaySinh, diaChi, soDT) values ('DG00001', 2, 'Doc gia 1', '11/12/1998', 'Địa chỉ 1', 0907395472 )
 
 insert  into TheLoaiSach values('Tiểu thuyết')
 insert  into TheLoaiSach values('Trinh thám')
@@ -107,21 +110,23 @@ insert into NhaXuatBan values ('Nhà xuất bản Phương nam', 'quận 1, tp.H
 insert into NhaXuatBan values ('Nhà xuất bản Mới', 'Linh Trung, Thủ Đức, tp.HCM', 0903888777)
 
 
-
-
-
 insert into DauSach (mads, tends, tacgia, theLoai, nxb) values ('DS00001', N'Trộm chó', N'Trịnh Hoàng', 1, 1)
 insert into DauSach (mads, tends, tacgia, theLoai, nxb) values ('DS00002', N'Đặt tên sao cho nó dài thật là dài :))', N'Trịnh Lâm', 2, 2)
+insert into DauSach (mads, tends, tacgia, theLoai, nxb) values ('DS00003', N'Tôi thấy hoa vàng trên cỏ xanh', N'Trịnh Lâm', 3, 3)
 
 insert into CuonSach (maCS,mads,ngonngu,taiban) values ('CS00001', 'DS00001', N'Tiếng việt', N'Lần 1')
 insert into CuonSach (maCS,mads,ngonngu,taiban) values ('CS00002', 'DS00001', N'Tiếng việt', N'Lần 1')
 insert into CuonSach (maCS,mads,ngonngu,taiban) values ('CS00003', 'DS00001', N'Tiếng việt', N'Lần 1')
 insert into CuonSach (maCS,mads,ngonngu,taiban) values ('CS00004', 'DS00002', N'Tiếng việt', N'Lần 1')
-
-insert into QuaTrinh_Muon (maCS, maDG, ngayMuon) values ('CS00001', 'DG00001', '1/1/2018')
-insert into QuaTrinh_Muon (maCS, maDG, ngayMuon) values ('CS00002', 'DG00001', '11/1/2018')
-insert into QuaTrinh_Muon (maCS, maDG, ngayMuon,ngayHetHan) values ('CS00003', 'DG00001', '1/1/2018','2/2/2018')
+insert into CuonSach (maCS,mads,ngonngu,taiban) values ('CS00005', 'DS00003', N'Tiếng việt', N'Lần 1')
+insert into CuonSach (maCS,mads,ngonngu,taiban) values ('CS00006', 'DS00003', N'Tiếng việt', N'Lần 1')
 go
+
+--insert into QuaTrinh_Muon (maCS, maDG, ngayMuon) values ('CS00001', 'DG00001', '1/1/2018')
+--insert into QuaTrinh_Muon (maCS, maDG, ngayMuon) values ('CS00002', 'DG00001', '11/1/2018')
+--insert into QuaTrinh_Muon (maCS, maDG, ngayMuon,ngayHetHan) values ('CS00003', 'DG00001', '1/1/2018','2/2/2018')
+--insert into QuaTrinh_Muon (maCS, maDG) values ('CS00002', 'DG00001')
+--go
 ---------------------------- -+- Trigger----------------------------
 
 
@@ -178,7 +183,7 @@ go
 
 
 
-
+--select * from docgia
 --select * from dausach
 --select * from CuonSach
 --select * from QuaTrinh_Muon

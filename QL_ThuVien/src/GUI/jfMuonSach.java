@@ -53,6 +53,7 @@ public class jfMuonSach extends javax.swing.JFrame {
                 listMuon = new ArrayList<>();
                 txtSLSachDangMuon.setText("");
                 txtSLSachQuanHan.setText("");
+                txtTenDG.setText("");
                 List<String> list = MuonSachDAO.Instance().getListMaDG();
                 if("".equals(txtMaDG.getText()))
                     lbCheckMaDG.setText("");
@@ -357,12 +358,13 @@ public class jfMuonSach extends javax.swing.JFrame {
                             .addGap(16, 16, 16))
                         .addComponent(DS_SachMuon, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addGap(8, 8, 8)
                             .addComponent(txtTenSachTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(btKTraTuaSach, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 624, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(2, 2, 2))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,21 +374,23 @@ public class jfMuonSach extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(251, 251, 251))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel4Layout.createSequentialGroup()
-                                    .addGap(8, 8, 8)
-                                    .addComponent(txtTenSachTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(btKTraTuaSach, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(26, 26, 26)
-                            .addComponent(DS_SachMuon, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(11, 11, 11)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btMuonSach, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btXoaSM, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(txtTenSachTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btKTraTuaSach, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addComponent(DS_SachMuon, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btMuonSach, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btXoaSM, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
         );
 
         javax.swing.GroupLayout pnMuonSachLayout = new javax.swing.GroupLayout(pnMuonSach);
@@ -430,7 +434,22 @@ public class jfMuonSach extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btMuonSachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btMuonSachActionPerformed
-        // TODO add your handling code here:
+        if(listMaCSMuon.isEmpty()){
+            JOptionPane.showMessageDialog(rootPane, "Chưa có cuốn nào trong danh sách mượn!\n ");
+        }
+        else{
+            for(String x : listMaCSMuon){
+                MuonSachDAO.Instance().insertMuonSach(maDG, x);
+            }
+
+            JOptionPane.showMessageDialog(rootPane, "Thành công!\n ");
+            listMuon = new ArrayList<>();
+            listMaCSMuon = new ArrayList<>();
+            jTextAreaMS.setText(null);
+            
+            btKTraDGActionPerformed(evt);
+            btKTraTuaSachActionPerformed(evt);
+        }
     }//GEN-LAST:event_btMuonSachActionPerformed
 
     private void btKTraTuaSachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btKTraTuaSachActionPerformed

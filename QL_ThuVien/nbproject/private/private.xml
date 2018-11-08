@@ -4,6 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/DATA%20D/gitHUB/Java/QL_ThuVien/src/GUI/jfMuonSach.java</file>
+            <file>file:/C:/DATA%20D/gitHUB/Java/QL_ThuVien/src/DAO/J2SQL.java</file>
+            <file>file:/C:/DATA%20D/gitHUB/Java/QL_ThuVien/src/GUI/jfMainMenu.java</file>
+            <file>file:/C:/DATA%20D/gitHUB/Java/QL_ThuVien/src/GUI/jfLogin.java</file>
+            <file>file:/C:/DATA%20D/gitHUB/Java/QL_ThuVien/src/DAO/MuonSachDAO.java</file>
         </group>
     </open-files>
 </project-private>

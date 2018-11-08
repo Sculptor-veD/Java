@@ -74,6 +74,11 @@ public class MuonSachDAO {
         return Integer.parseInt(J2SQL.Instance().ExecuteReader(query,new Object[]{maDG}));
     }
     
+    public void insertMuonSach(String maDG, String maCS){
+        String query = "insert into QuaTrinh_Muon (maDG, maCS) values (?, ?)";
+        J2SQL.Instance().ExecuteNonQuery(query, new Object[]{maDG, maCS});
+        System.out.println(query);
+    }
     
 //     public static void main(String[] args) throws SQLException {
 //         String rs =  MuonSachDAO.Instance().getTenDG("dg0000");

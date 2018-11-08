@@ -19,7 +19,7 @@ public class QL_ThuVien {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-      int r =  J2SQL.Instance().ExecuteNonQuery("Insert into DocGia values(?,?)", new Object[]{"Nguyễn Công Thoại",null});
+      int r =  J2SQL.Instance().ExecuteNonQuery("Insert into LoaiDocGia values(?,?,?)", new Object[]{4,"Loai dg 4", 4});
         System.out.println(" R:  "+ r);
         
     }
